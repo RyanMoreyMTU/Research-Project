@@ -3,11 +3,9 @@ import pandas as pd
 # separate functions because they dont all share the same channel names
 
 def add_filters(raw):
-    # 6-pole Butterworth high-pass filter with a cut-off frequency of 0.5 Hz
     raw.filter(l_freq=0.5, h_freq=None, method='iir', iir_params=dict(ftype='butter', order=6),
                phase='zero', picks='all')
 
-    # Infinite impulse response (IIR) notch filter with a center at 50 Hz and bandwidth of 4/256 Hz
     raw.notch_filter(freqs=50, picks='all', notch_widths=4.0 / 256.0)
     
 def clean_eeg1_eeg2(input_file, output_file, annotation_file, eeg_column):
