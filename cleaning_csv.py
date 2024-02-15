@@ -6,18 +6,31 @@ def add_filters(raw):
                phase='zero', picks='all')
 
     raw.notch_filter(freqs=50, picks='all', notch_widths=4.0 / 256.0)
-
-def clean_eeg1_eeg2(input_file, output_file, annotation_file, eeg_column):
-    raw = mne.io.read_raw_edf(input_file, preload=True)
     
-    channels_to_drop = ['EEG Cz-REF', 'ECG EKG-REF', 'Resp Effort-REF']  
+# using .lower() to standardize the channels
+def standardize_channel_names(raw):
+    raw.rename_channels(lambda x: x.lower())
+
+# instead of two separate function, just checking if a unique common phrase is
+# found in each channel and dropping it if so.
+def identify_channels_to_drop(raw):
+    channels_to_drop = [ch_name for ch_name in raw.ch_names if 'Cz' in ch_name or 'EKG' in ch_name or 'Effort' in ch_name]
+    return channels_to_drop
+
+# gets raw data, drops channels, standardizes, annotates, adds filters, adds times,
+# and converts to csv
+def clean(input_file, output_file, annotation_file, eeg_column):
+    raw = mne.io.read_raw_edf(input_file, preload=True)
+    add_filters(raw)
+    channels_to_drop = identify_channels_to_drop(raw)
     raw.drop_channels(channels_to_drop)
+    
+    standardize_channel_names(raw)
     
     annotations = pd.read_csv(annotation_file)
     onsets = annotations[annotations[eeg_column] == 1].index
     
     raw.set_annotations(mne.Annotations(onset=onsets, duration=1, description='Seizure'))
-    add_filters(raw)
 
     times = raw.times
     df = pd.DataFrame(data=raw.get_data().T, columns=raw.ch_names)
@@ -25,65 +38,25 @@ def clean_eeg1_eeg2(input_file, output_file, annotation_file, eeg_column):
     df.set_index('time', inplace=True)
 
     df.index = pd.to_datetime(df.index, unit='s')
-    df_resampled = df.resample('1S').mean().reset_index()
+    df_resampled = df.resample('1S').asfreq().reset_index()
 
-    # Add a new column 'Seizure' indicating whether each row corresponds to a seizure
     df_resampled['Seizure'] = df_resampled['time'].isin(pd.to_datetime(onsets, unit='s')).astype(int)
 
     df_resampled.to_csv(output_file, index=False)
 
-def clean_eeg3_eeg6(input_file, output_file, annotation_file, eeg_column):
-    raw = mne.io.read_raw_edf(input_file, preload=True)
 
-    channels_to_drop = ['EEG Cz-Ref', 'ECG EKG', 'Resp Effort']
-    raw.drop_channels(channels_to_drop)
-    
-    annotations = pd.read_csv(annotation_file)
-    onsets = annotations[annotations[eeg_column] == 1].index
-    
-    raw.set_annotations(mne.Annotations(onset=onsets, duration=1, description='Seizure'))
-    add_filters(raw)
+eeg_files_info = [
+    {'input_file': 'eeg25.edf', 'output_file': 'eeg25_csv.csv', 'eeg_column': '25'},
+    {'input_file': 'eeg44.edf', 'output_file': 'eeg44_csv.csv', 'eeg_column': '44'},
+    {'input_file': 'eeg34.edf', 'output_file': 'eeg34_csv.csv', 'eeg_column': '34'},
+    {'input_file': 'eeg42.edf', 'output_file': 'eeg42_csv.csv', 'eeg_column': '42'},
+    {'input_file': 'eeg58.edf', 'output_file': 'eeg58_csv.csv', 'eeg_column': '58'},
+    {'input_file': 'eeg72.edf', 'output_file': 'eeg72_csv.csv', 'eeg_column': '72'},
+    {'input_file': 'eeg3.edf', 'output_file': 'eeg3_csv.csv', 'eeg_column': '3'},
+    {'input_file': 'eeg73.edf', 'output_file': 'eeg73_csv.csv', 'eeg_column': '73'},
+    {'input_file': 'eeg56.edf', 'output_file': 'eeg56_csv.csv', 'eeg_column': '56'}
+]
 
-    times = raw.times
-    df = pd.DataFrame(data=raw.get_data().T, columns=raw.ch_names)
-    df['time'] = times
-    df.set_index('time', inplace=True)
+for info in eeg_files_info:
+    clean(info['input_file'], info['output_file'], 'merged_annotation.csv', info['eeg_column'])
 
-    df.index = pd.to_datetime(df.index, unit='s')
-    df_resampled = df.resample('1S').mean().reset_index()
-
-    # Add a new column 'Seizure' indicating whether each row corresponds to a seizure
-    df_resampled['Seizure'] = df_resampled['time'].isin(pd.to_datetime(onsets, unit='s')).astype(int)
-
-    df_resampled.to_csv(output_file, index=False)
-    
-eeg1_annotation_file = 'eeg1_annotations.csv'
-eeg2_annotation_file = 'eeg2_annotations.csv'
-eeg3_annotation_file = 'eeg3_annotations.csv'
-eeg4_annotation_file = 'eeg4_annotations.csv'
-eeg5_annotation_file = 'eeg5_annotations.csv'
-eeg6_annotation_file = 'eeg6_annotations.csv'
-
-eeg1_input_file = 'eeg1.edf'
-eeg1_output_file = 'eeg1_csv.csv'
-clean_eeg1_eeg2(eeg1_input_file, eeg1_output_file, eeg1_annotation_file, 'eeg1')
-
-eeg2_input_file = 'eeg2.edf'
-eeg2_output_file = 'eeg2_csv.csv'
-clean_eeg1_eeg2(eeg2_input_file, eeg2_output_file, eeg2_annotation_file, 'eeg2')
-
-eeg3_input_file = 'eeg3.edf'
-eeg3_output_file = 'eeg3_csv.csv'
-clean_eeg3_eeg6(eeg3_input_file, eeg3_output_file, eeg3_annotation_file, 'eeg3')
-
-eeg4_input_file = 'eeg4.edf'
-eeg4_output_file = 'eeg4_csv.csv'
-clean_eeg3_eeg6(eeg4_input_file, eeg4_output_file, eeg4_annotation_file, 'eeg4')
-
-eeg5_input_file = 'eeg5.edf'
-eeg5_output_file = 'eeg5_csv.csv'
-clean_eeg3_eeg6(eeg5_input_file, eeg5_output_file, eeg5_annotation_file, 'eeg5')
-
-eeg6_input_file = 'eeg6.edf'
-eeg6_output_file = 'eeg6_csv.csv'
-clean_eeg3_eeg6(eeg6_input_file, eeg6_output_file, eeg6_annotation_file, 'eeg6')
