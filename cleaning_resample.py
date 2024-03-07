@@ -29,7 +29,7 @@ def clean(input_file, output_file, annotation_file, eeg_column):
 
     # new code for adding antialiasing 
     eeg_picks = mne.pick_types(raw.info, eeg=True)
-    raw = raw.resample(sfreq=32, npad="auto", window="boxcar", n_jobs=1)
+    raw = raw.resample(sfreq=32)
     raw.pick(picks=eeg_picks)
 
     times = raw.times
