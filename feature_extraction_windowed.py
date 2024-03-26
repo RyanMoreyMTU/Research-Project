@@ -24,7 +24,7 @@ def extract_features(channel_data):
     # variance
     features['variance'] = np.var(channel_data)
     
-    f, Pxx = welch(channel_data, fs=256, nperseg=len(channel_data))
+    f, Pxx = welch(channel_data, fs=32, nperseg=len(channel_data))
     
     # total power (0–12 Hz)
     total_power_index = np.where((f >= 0) & (f <= 12))[0]
@@ -38,16 +38,22 @@ def extract_features(channel_data):
 
     return features
 
+def process_row(row):
+    # if row['mean_peak_frequency'] == 16:
+    if row['mean_total_power'] < 1e-20:
+        row.loc[row.index.difference(['start', 'end'])] = 0
+    return row
+
 # list to add more eeg file to if needed
-eeg_file_paths = ['eeg25_csv.csv', 
-                  'eeg44_csv.csv', 
-                  'eeg72_csv.csv',
-                  'eeg34_csv.csv',
-                  'eeg42_csv.csv', 
-                  'eeg58_csv.csv', 
-                  'eeg3_csv.csv',
-                  'eeg73_csv.csv',
-                  'eeg56_csv.csv']
+eeg_file_paths = ['CSVRaw/eeg25.csv', 
+                  'CSVRaw/eeg44.csv', 
+                  'CSVRaw/eeg72.csv',
+                  'CSVRaw/eeg34.csv',
+                  'CSVRaw/eeg42.csv', 
+                  'CSVRaw/eeg58.csv', 
+                  'CSVRaw/eeg3.csv',
+                  'CSVRaw/eeg73.csv',
+                  'CSVRaw/eeg56.csv']
 
 # main loop
 for file_path in eeg_file_paths:
@@ -62,7 +68,7 @@ for file_path in eeg_file_paths:
     df['seizure_label'] = 0
     
     # creating the window size and making it modular incase I want to change it
-    window_size = 60 
+    window_size = 60 * 32
     overlap_percentage = 50
     step_size = int(window_size * (1-overlap_percentage / 100))
     
@@ -104,12 +110,24 @@ for file_path in eeg_file_paths:
                      'variance', 
                      'total_power', 
                      'peak_frequency']
+    
     # getting the mean of each feature for each window
     for feature_name in feature_names:
         channel_features = [col for col in windowed_feature_df.columns if f'{feature_name}' in col]
         windowed_feature_df[f'mean_{feature_name}'] = windowed_feature_df[channel_features].mean(axis=1)
 
-    output_file_path = f"{file_path.replace('.csv', '_features.csv')}"
-    windowed_feature_df.to_csv(output_file_path, index=False)
+   # Create a copy of the DataFrame before changes
+    original_windowed_feature_df = windowed_feature_df.copy()
 
-    print(f"Processed features saved to {output_file_path}")
+    # Save the original features to a CSV file
+    output_file_path = f"CSVFeatures/{file_path.split('/')[-1].replace('.csv', '_features.csv')}"
+    original_windowed_feature_df.to_csv(output_file_path, index=False)
+    print(f"Original features saved to {output_file_path}")
+
+    # Apply the process_row function to each row
+    windowed_feature_df = windowed_feature_df.apply(process_row, axis=1)
+
+    # Save the modified features to a new CSV file
+    output_changed_file_path = f"CSVFeaturesChanged/{file_path.split('/')[-1].replace('.csv', '_features_changed.csv')}"
+    windowed_feature_df.to_csv(output_changed_file_path, index=False)
+    print(f"Processed features with changed values saved to {output_changed_file_path}")
