@@ -46,20 +46,19 @@ def clean(input_file, output_file, annotation_file, eeg_column):
 
     for idx in onsets_indices:
         df_resampled.loc[idx:idx + 31, 'Seizure'] = 1
-    print("Finished processing the Seizure column")
     df_resampled.to_csv(output_file, index=False)
 
 eeg_files_info = [
-    {'input_file': 'eeg25.edf', 'output_file': 'eeg25.csv', 'eeg_column': '25'},
-    {'input_file': 'eeg44.edf', 'output_file': 'eeg44.csv', 'eeg_column': '44'},
-    {'input_file': 'eeg34.edf', 'output_file': 'eeg34.csv', 'eeg_column': '34'},
-    {'input_file': 'eeg42.edf', 'output_file': 'eeg42.csv', 'eeg_column': '42'},
-    {'input_file': 'eeg58.edf', 'output_file': 'eeg58.csv', 'eeg_column': '58'},
-    {'input_file': 'eeg72.edf', 'output_file': 'eeg72.csv', 'eeg_column': '72'},
-    {'input_file': 'eeg3.edf', 'output_file': 'eeg3.csv', 'eeg_column': '3'},
-    {'input_file': 'eeg73.edf', 'output_file': 'eeg73.csv', 'eeg_column': '73'},
-    {'input_file': 'eeg56.edf', 'output_file': 'eeg56.csv', 'eeg_column': '56'}
+    {'input_file': 'EDFFiles/eeg25.edf', 'output_file': 'CSVRaw/eeg25.csv', 'eeg_column': '25'},
+    {'input_file': 'EDFFiles/eeg44.edf', 'output_file': 'CSVRaw/eeg44.csv', 'eeg_column': '44'},
+    {'input_file': 'EDFFiles/eeg34.edf', 'output_file': 'CSVRaw/eeg34.csv', 'eeg_column': '34'},
+    {'input_file': 'EDFFiles/eeg42.edf', 'output_file': 'CSVRaw/eeg42.csv', 'eeg_column': '42'},
+    {'input_file': 'EDFFiles/eeg58.edf', 'output_file': 'CSVRaw/eeg58.csv', 'eeg_column': '58'},
+    {'input_file': 'EDFFiles/eeg72.edf', 'output_file': 'CSVRaw/eeg72.csv', 'eeg_column': '72'},
+    {'input_file': 'EDFFiles/eeg3.edf', 'output_file': 'CSVRaw/eeg3.csv', 'eeg_column': '3'},
+    {'input_file': 'EDFFiles/eeg73.edf', 'output_file': 'CSVRaw/eeg73.csv', 'eeg_column': '73'},
+    {'input_file': 'EDFFiles/eeg56.edf', 'output_file': 'CSVRaw/eeg56.csv', 'eeg_column': '56'}
 ]
 
 for info in eeg_files_info:
-    clean(info['input_file'], info['output_file'], 'annotationA.csv', info['eeg_column'])
+    clean(info['input_file'], info['output_file'], 'Annotations/annotationA.csv', info['eeg_column'])

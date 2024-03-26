@@ -45,15 +45,15 @@ def process_row(row):
     return row
 
 # list to add more eeg file to if needed
-eeg_file_paths = ['eeg25.csv', 
-                  'eeg44.csv', 
-                  'eeg72.csv',
-                  'eeg34.csv',
-                  'eeg42.csv', 
-                  'eeg58.csv', 
-                  'eeg3.csv',
-                  'eeg73.csv',
-                  'eeg56.csv']
+eeg_file_paths = ['CSVRaw/eeg25.csv', 
+                  'CSVRaw/eeg44.csv', 
+                  'CSVRaw/eeg72.csv',
+                  'CSVRaw/eeg34.csv',
+                  'CSVRaw/eeg42.csv', 
+                  'CSVRaw/eeg58.csv', 
+                  'CSVRaw/eeg3.csv',
+                  'CSVRaw/eeg73.csv',
+                  'CSVRaw/eeg56.csv']
 
 # main loop
 for file_path in eeg_file_paths:
@@ -120,7 +120,7 @@ for file_path in eeg_file_paths:
     original_windowed_feature_df = windowed_feature_df.copy()
 
     # Save the original features to a CSV file
-    output_file_path = f"{file_path.replace('.csv', '_features.csv')}"
+    output_file_path = f"CSVFeatures/{file_path.split('/')[-1].replace('.csv', '_features.csv')}"
     original_windowed_feature_df.to_csv(output_file_path, index=False)
     print(f"Original features saved to {output_file_path}")
 
@@ -128,6 +128,6 @@ for file_path in eeg_file_paths:
     windowed_feature_df = windowed_feature_df.apply(process_row, axis=1)
 
     # Save the modified features to a new CSV file
-    output_changed_file_path = f"{file_path.replace('.csv', '_features_changed.csv')}"
+    output_changed_file_path = f"CSVFeaturesChanged/{file_path.split('/')[-1].replace('.csv', '_features_changed.csv')}"
     windowed_feature_df.to_csv(output_changed_file_path, index=False)
     print(f"Processed features with changed values saved to {output_changed_file_path}")
