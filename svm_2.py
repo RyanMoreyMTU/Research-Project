@@ -11,11 +11,9 @@ file_paths = [
     "~/ResearchProject/CSVFeaturesChanged/eeg42_features_changed.csv"
 ]
 
-dfs = [pd.read_csv(file) for file in file_paths]
+dfs = [pd.read_csv(file).drop(['start', 'end'], axis=1) for file in file_paths]
 
 df = pd.concat(dfs, ignore_index=True)
-
-df.drop(['start', 'end'], axis=1, inplace=True)
 
 X = df.drop('seizure_label', axis=1)
 y = df['seizure_label']
