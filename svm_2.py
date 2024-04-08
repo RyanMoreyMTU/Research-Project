@@ -36,20 +36,15 @@ print(np.sum(y_pred)/len(y_pred))
 print(y_pred)
 
 plt.figure(figsize=(10, 5))
-
 plt.plot(y_test.values, label='y_test', color='blue', linestyle='-')
-
 plt.plot(y_pred, label='y_pred', color='red', linestyle='-')
-
 seizure_indices = np.where(y_test == 1)[0]
 for idx in range(len(y_test)):
     if y_test.values[idx] == y_pred[idx]:
         plt.scatter(idx, y_test.values[idx], color='green', label='Agreement' if idx == seizure_indices[0] else '')
-
 plt.title('Comparison between y_test and y_pred')
 plt.xlabel('Index')
 plt.ylabel('Annotation')
 plt.legend()
 plt.grid(True)
 plt.show()
-
