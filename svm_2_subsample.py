@@ -25,7 +25,7 @@ non_seizure_df = pd.concat([df[df['seizure_label'] == 0] for df in dfs[:-1]])
 num_non_seizure_samples = len(seizure_df)
 non_seizure_sampled = non_seizure_df.sample(n=num_non_seizure_samples, random_state=0)
 
-# For non seizure data, take only 40% of the files length at random
+# For non seizure data, take only 40% of the files length
 fourth_file_non_seizure = dfs[-2][dfs[-2]['seizure_label'] == 0]
 num_samples_from_fourth_file = int(0.4 * len(fourth_file_non_seizure))
 fourth_file_non_seizure_sampled = fourth_file_non_seizure.sample(n=num_samples_from_fourth_file, random_state=0)
