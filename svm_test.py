@@ -38,7 +38,7 @@ y_train = train_df['seizure_label']
 X_test = test_df.drop('seizure_label', axis=1)
 y_test = test_df['seizure_label']
 
-# Select only the features present in both datasets 
+# Select only the features present in both datasets
 # (they are the same anyways but doesn't run unless I do this for some reason)
 common_features = list(set(X_train.columns) & set(X_test.columns))
 X_train = X_train[common_features]
