@@ -2,6 +2,25 @@ import numpy as np
 import pandas as pd
 from scipy.stats import skew, kurtosis
 from scipy.signal import welch
+from scipy.stats import entropy
+
+def hjorth_parameters(channel_data):
+    activity = np.var(channel_data)
+    diff1 = np.diff(channel_data)
+    mobility = np.sqrt(np.var(diff1) / activity)
+    diff2 = np.diff(diff1)
+    complexity = np.sqrt(np.var(diff2) / np.var(diff1)) / mobility
+    return activity, mobility, complexity
+
+def spectral_entropy(channel_data, sf, nperseg=256, normalize=True):
+    f, Pxx = welch(channel_data, fs=sf, nperseg=len(channel_data))
+    Pxx = Pxx / Pxx.sum() if normalize else Pxx
+    return entropy(Pxx, base=2)
+
+def shannon_entropy(channel_data, bins=10):
+    hist, _ = np.histogram(channel_data, bins=bins, density=True)
+    hist = hist[hist != 0]
+    return -np.sum(hist * np.log2(hist))
 
 def extract_features(channel_data):
     features = {}
@@ -35,7 +54,16 @@ def extract_features(channel_data):
     peak_frequency_index = np.argmax(Pxx)
     peak_frequency = f[peak_frequency_index]
     features['peak_frequency'] = peak_frequency
-
+    
+    # hjorth parameters
+    activity, mobility, complexity = hjorth_parameters(channel_data)
+    features['activity'] = activity
+    features['mobility'] = mobility
+    features['complexity'] = complexity
+    
+    # spectral entropy
+    features['spectral_entropy'] = spectral_entropy(channel_data, sf=32)
+    
     return features
 
 def process_row(row):
@@ -115,6 +143,8 @@ for file_path in eeg_file_paths:
     for feature_name in feature_names:
         channel_features = [col for col in windowed_feature_df.columns if f'{feature_name}' in col]
         windowed_feature_df[f'mean_{feature_name}'] = windowed_feature_df[channel_features].mean(axis=1)
+        windowed_feature_df[f'min_{feature_name}'] = windowed_feature_df[channel_features].min(axis=1)
+        windowed_feature_df[f'max_{feature_name}'] = windowed_feature_df[channel_features].max(axis=1)
 
    # Create a copy of the DataFrame before changes
     original_windowed_feature_df = windowed_feature_df.copy()
