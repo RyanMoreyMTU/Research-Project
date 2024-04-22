@@ -24,6 +24,7 @@ def shannon_entropy(channel_data, bins=10):
 
 def extract_features(channel_data):
     features = {}
+    f, Pxx = welch(channel_data, fs=32, nperseg=len(channel_data))
     
     # curve length
     features['curve_length'] = np.sum(np.abs(np.diff(channel_data)))
@@ -42,8 +43,6 @@ def extract_features(channel_data):
 
     # variance
     features['variance'] = np.var(channel_data)
-    
-    f, Pxx = welch(channel_data, fs=32, nperseg=len(channel_data))
     
     # total power (0–12 Hz)
     total_power_index = np.where((f >= 0) & (f <= 12))[0]

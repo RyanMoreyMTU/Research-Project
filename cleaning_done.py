@@ -61,4 +61,4 @@ eeg_files_info = [
 ]
 
 for info in eeg_files_info:
-    clean(info['input_file'], info['output_file'], 'Annotations/annotationA.csv', info['eeg_column'])
+    clean(info['input_file'], info['output_file'], 'Annotations/annotationC.csv', info['eeg_column'])
