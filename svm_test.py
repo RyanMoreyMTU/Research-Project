@@ -11,7 +11,7 @@ file_paths = {
     "~/ResearchProject/CSVFeaturesChanged/eeg25_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg44_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg34_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChanged/eeg42_features_changed.csv": "non_seizure",
+    "~/ResearchProject/CSVFeaturesChanged/eeg42_features_changed.csv": "non-seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg73_features_changed.csv": "test"
 }    
         
@@ -67,6 +67,13 @@ for coef, feature_name in coefficients_with_features:
     if 'mean' in feature_name:
         print(f"{feature_name}: {coef}")
 
+# Correct consecutive seizure predictions only if they are 1 or 2
+for i in range(len(y_pred) - 1):
+    if y_pred[i] == 1 and y_pred[i + 1] == 0 and y_pred[i - 1] == 0:
+        y_pred[i] = 0
+    elif y_pred[i] == 1 and y_pred[i + 1] == 1 and y_pred[i - 1] == 0 and y_pred[i+2] == 0:
+        y_pred[i] = 0
+
 # Code for comparing actual answer to prediction results in a plot
 plt.figure(figsize=(10, 5))
 plt.plot(y_test.values, label='y_test', color='blue', linestyle='-')
@@ -82,7 +89,6 @@ plt.legend(loc='center right')
 plt.grid(True)
 plt.show()
 
-# Classification Report and Accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print("\nAccuracy:", accuracy)
 
