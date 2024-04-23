@@ -67,7 +67,7 @@ for coef, feature_name in coefficients_with_features:
     if 'mean' in feature_name:
         print(f"{feature_name}: {coef}")
 
-# Correct consecutive seizure predictions only if they are 1 or 2
+# Getting rid of isolated predictions
 for i in range(len(y_pred) - 1):
     if y_pred[i] == 1 and y_pred[i + 1] == 0 and y_pred[i - 1] == 0:
         y_pred[i] = 0
