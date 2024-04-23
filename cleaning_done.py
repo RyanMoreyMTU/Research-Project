@@ -57,7 +57,10 @@ eeg_files_info = [
     {'input_file': 'EDFFiles/eeg72.edf', 'output_file': 'CSVRaw/eeg72.csv', 'eeg_column': '72'},
     {'input_file': 'EDFFiles/eeg3.edf', 'output_file': 'CSVRaw/eeg3.csv', 'eeg_column': '3'},
     {'input_file': 'EDFFiles/eeg73.edf', 'output_file': 'CSVRaw/eeg73.csv', 'eeg_column': '73'},
-    {'input_file': 'EDFFiles/eeg56.edf', 'output_file': 'CSVRaw/eeg56.csv', 'eeg_column': '56'}
+    {'input_file': 'EDFFiles/eeg56.edf', 'output_file': 'CSVRaw/eeg56.csv', 'eeg_column': '56'},
+    {'input_file': 'EDFFiles/eeg1.edf', 'output_file': 'CSVRaw/eeg1.csv', 'eeg_column': '1'},
+    {'input_file': 'EDFFiles/eeg4.edf', 'output_file': 'CSVRaw/eeg4.csv', 'eeg_column': '4'},
+    {'input_file': 'EDFFiles/eeg7.edf', 'output_file': 'CSVRaw/eeg7.csv', 'eeg_column': '7'}
 ]
 
 for info in eeg_files_info:
