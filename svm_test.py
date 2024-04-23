@@ -5,17 +5,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+pd.set_option('display.max_rows', None)
+
 file_paths = {
     "~/ResearchProject/CSVFeaturesChanged/eeg25_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg44_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg34_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg42_features_changed.csv": "non_seizure",
     "~/ResearchProject/CSVFeaturesChanged/eeg73_features_changed.csv": "test"
-}
-for path, label in file_paths.items():
-    if label == "seizure":
-        num_seizure_samples = sum(len(df[df['seizure_label'] == 1]) for df in path)
-        
+}    
         
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)
@@ -24,10 +22,8 @@ df = pd.concat(dfs.values(), ignore_index=True)
 train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test" and label != "non_seizure"]
 test_df = dfs[next(path for path, label in file_paths.items() if label == "test")]
 
-# Concatenate all dataframes except test_df for training data
-train_df = pd.concat([df[df['seizure_label'] == 1] for df in train_dfs])
-train_df = pd.concat([train_df, pd.concat([df[df['seizure_label'] == 0] for df in train_dfs])])
-
+train_df = pd.concat(train_dfs, ignore_index=True)
+print(train_df)
 # For non-seizure data, take only 40% of the file's length
 for path, label in file_paths.items():
     if label == "non_seizure":
