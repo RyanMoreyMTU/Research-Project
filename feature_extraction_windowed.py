@@ -17,11 +17,6 @@ def spectral_entropy(channel_data, sf, nperseg=256, normalize=True):
     Pxx = Pxx / Pxx.sum() if normalize else Pxx
     return entropy(Pxx, base=2)
 
-def shannon_entropy(channel_data, bins=10):
-    hist, _ = np.histogram(channel_data, bins=bins, density=True)
-    hist = hist[hist != 0]
-    return -np.sum(hist * np.log2(hist))
-
 def extract_features(channel_data):
     features = {}
     f, Pxx = welch(channel_data, fs=32, nperseg=len(channel_data))
@@ -80,7 +75,10 @@ eeg_file_paths = ['CSVRaw/eeg25.csv',
                   'CSVRaw/eeg58.csv', 
                   'CSVRaw/eeg3.csv',
                   'CSVRaw/eeg73.csv',
-                  'CSVRaw/eeg56.csv']
+                  'CSVRaw/eeg56.csv',
+                  'CSVRaw/eeg1.csv',
+                  'CSVRaw/eeg4.csv',
+                  'CSVRaw/eeg7.csv']
 
 # main loop
 for file_path in eeg_file_paths:
@@ -136,7 +134,11 @@ for file_path in eeg_file_paths:
                      'kurtosis', 
                      'variance', 
                      'total_power', 
-                     'peak_frequency']
+                     'peak_frequency',
+                     'spectral_entropy',
+                     'activity',
+                     'mobility',
+                     'complexity']
     
     # getting the mean of each feature for each window
     for feature_name in feature_names:
