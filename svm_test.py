@@ -17,7 +17,6 @@ file_paths = {
         
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)
-
 # Split up data frames into train and test
 train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test" and label != "non_seizure"]
 test_df = dfs[next(path for path, label in file_paths.items() if label == "test")]

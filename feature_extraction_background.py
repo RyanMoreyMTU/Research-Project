@@ -24,7 +24,6 @@ feature_files = ['CSVFeaturesChanged/eeg25_features_changed.csv',
                  'CSVFeaturesChanged/eeg1_features_changed.csv',
                  'CSVFeaturesChanged/eeg4_features_changed.csv',
                  'CSVFeaturesChanged/eeg7_features_changed.csv']
-
 # main loop
 for file_path in feature_files:
     process_file(file_path)
