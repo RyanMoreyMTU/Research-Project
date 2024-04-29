@@ -1,5 +1,6 @@
 import mne
 import pandas as pd
+import os
 
 def add_filters(raw):
     raw.filter(l_freq=0.5, h_freq=None, method='iir', iir_params=dict(ftype='butter', order=6),
@@ -48,20 +49,18 @@ def clean(input_file, output_file, annotation_file, eeg_column):
         df_resampled.loc[idx:idx + 31, 'Seizure'] = 1
     df_resampled.to_csv(output_file, index=False)
 
-eeg_files_info = [
-    {'input_file': 'EDFFiles/eeg25.edf', 'output_file': 'CSVRaw/eeg25.csv', 'eeg_column': '25'},
-    {'input_file': 'EDFFiles/eeg44.edf', 'output_file': 'CSVRaw/eeg44.csv', 'eeg_column': '44'},
-    {'input_file': 'EDFFiles/eeg34.edf', 'output_file': 'CSVRaw/eeg34.csv', 'eeg_column': '34'},
-    {'input_file': 'EDFFiles/eeg42.edf', 'output_file': 'CSVRaw/eeg42.csv', 'eeg_column': '42'},
-    {'input_file': 'EDFFiles/eeg58.edf', 'output_file': 'CSVRaw/eeg58.csv', 'eeg_column': '58'},
-    {'input_file': 'EDFFiles/eeg72.edf', 'output_file': 'CSVRaw/eeg72.csv', 'eeg_column': '72'},
-    {'input_file': 'EDFFiles/eeg3.edf', 'output_file': 'CSVRaw/eeg3.csv', 'eeg_column': '3'},
-    {'input_file': 'EDFFiles/eeg73.edf', 'output_file': 'CSVRaw/eeg73.csv', 'eeg_column': '73'},
-    {'input_file': 'EDFFiles/eeg56.edf', 'output_file': 'CSVRaw/eeg56.csv', 'eeg_column': '56'},
-    {'input_file': 'EDFFiles/eeg1.edf', 'output_file': 'CSVRaw/eeg1.csv', 'eeg_column': '1'},
-    {'input_file': 'EDFFiles/eeg4.edf', 'output_file': 'CSVRaw/eeg4.csv', 'eeg_column': '4'},
-    {'input_file': 'EDFFiles/eeg7.edf', 'output_file': 'CSVRaw/eeg7.csv', 'eeg_column': '7'}
-]
+# Directory containing EDF files
+edf_directory = 'EDFFiles/'
 
+# Get a list of all .edf files in the directory
+edf_files = [f for f in os.listdir(edf_directory) if f.endswith('.edf')]
+
+# Generate eeg_files_info list
+eeg_files_info = [{'input_file': os.path.join(edf_directory, file),
+                   'output_file': 'CSVRaw/' + file.replace('.edf', '.csv'),
+                   'eeg_column': file.replace('eeg', '').replace('.edf', '')}
+                  for file in edf_files]
+
+# Iterate through eeg_files_info and call clean function for each file
 for info in eeg_files_info:
     clean(info['input_file'], info['output_file'], 'Annotations/annotationC.csv', info['eeg_column'])

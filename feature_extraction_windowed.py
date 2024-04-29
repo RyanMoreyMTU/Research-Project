@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 from scipy.stats import skew, kurtosis
 from scipy.signal import welch
 from scipy.stats import entropy
@@ -66,19 +67,12 @@ def process_row(row):
         row.loc[row.index.difference(['start', 'end'])] = 0
     return row
 
-# list to add more eeg file to if needed
-eeg_file_paths = ['CSVRaw/eeg25.csv', 
-                  'CSVRaw/eeg44.csv', 
-                  'CSVRaw/eeg72.csv',
-                  'CSVRaw/eeg34.csv',
-                  'CSVRaw/eeg42.csv', 
-                  'CSVRaw/eeg58.csv', 
-                  'CSVRaw/eeg3.csv',
-                  'CSVRaw/eeg73.csv',
-                  'CSVRaw/eeg56.csv',
-                  'CSVRaw/eeg1.csv',
-                  'CSVRaw/eeg4.csv',
-                  'CSVRaw/eeg7.csv']
+# Directory containing eeg files
+directory = 'CSVRaw/'
+
+# Get all files in the directory
+eeg_file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
+
 
 # main loop
 for file_path in eeg_file_paths:
