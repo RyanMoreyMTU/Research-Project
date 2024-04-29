@@ -11,19 +11,12 @@ def process_file(file_path):
     df.to_csv(output_file_path, index=False)
     print(f"Processed file saved to {output_file_path}")
 
-# list to add more processed feature files to if needed
-feature_files = ['CSVFeaturesChanged/eeg25_features_changed.csv', 
-                 'CSVFeaturesChanged/eeg44_features_changed.csv', 
-                 'CSVFeaturesChanged/eeg72_features_changed.csv',
-                 'CSVFeaturesChanged/eeg34_features_changed.csv',
-                 'CSVFeaturesChanged/eeg42_features_changed.csv', 
-                 'CSVFeaturesChanged/eeg58_features_changed.csv', 
-                 'CSVFeaturesChanged/eeg3_features_changed.csv',
-                 'CSVFeaturesChanged/eeg73_features_changed.csv',
-                 'CSVFeaturesChanged/eeg56_features_changed.csv',
-                 'CSVFeaturesChanged/eeg1_features_changed.csv',
-                 'CSVFeaturesChanged/eeg4_features_changed.csv',
-                 'CSVFeaturesChanged/eeg7_features_changed.csv']
+# Directory containing processed feature files
+directory = 'CSVFeaturesChanged/'
+
+# Get all files in the directory
+feature_files = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
+
 # main loop
 for file_path in feature_files:
     process_file(file_path)
