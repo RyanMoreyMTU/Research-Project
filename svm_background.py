@@ -1,6 +1,7 @@
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,6 +11,7 @@ file_paths = {
     "~/ResearchProject/CSVFeaturesChangedBackground/eeg4_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChangedBackground/eeg58_features_changed.csv": "non_seizure",
     "~/ResearchProject/CSVFeaturesChangedBackground/eeg34_features_changed.csv": "seizure",
+    "~/ResearchProject/CSVFeaturesChangedBackground/eeg4_features_changed.csv": "seizure",
     "~/ResearchProject/CSVFeaturesChangedBackground/background_test.csv": "test"
 }
 
@@ -41,7 +43,20 @@ X_test_normalized = scaler.transform(X_test)
 svm_model = SVC(kernel='linear', random_state=0)
 svm_model.fit(X_train_normalized, y_train)
 
-y_pred = svm_model.predict(X_test_normalized)
+param_grid = {'C': [1],
+              'kernel': ['linear'],
+              'gamma': [1],
+              'class_weight': [None],
+              'max_iter': [1000],
+              'tol': [1e-3]
+              }
+
+grid = GridSearchCV(SVC(), param_grid, refit=True, verbose=2)
+grid.fit(X_train_normalized, y_train)
+print(grid.best_params_)
+
+# 4. Prediction
+y_pred = grid.predict(X_test_normalized)
 
 # Start of coefficient/feature importance code
 feature_names = X_train.columns
@@ -69,6 +84,12 @@ plt.ylabel('Annotation')
 plt.legend(loc='center right')
 plt.grid(True)
 plt.show()
+
+# Print grid search results
+print("Grid Search Results:")
+print("Best Parameters:", grid.best_params_)
+print("Best Cross-Validation Score: {:.4f}".format(grid.best_score_))
+print("Best Estimator: ", grid.best_estimator_)
 
 # Classification Report and Accuracy
 accuracy = accuracy_score(y_test, y_pred)
