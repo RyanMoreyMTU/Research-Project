@@ -8,19 +8,13 @@ import matplotlib.pyplot as plt
 
 pd.set_option('display.max_rows', None)
 
-directory = "CSVFeaturesChangedBackground/"
-eeg_file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
-
-# Define labels for each file
-file_paths = {}
-for file_path in eeg_file_paths:
-    df = pd.read_csv(os.path.expanduser(file_path))
-    if df['seizure_label'].isin([1]).all():
-        file_paths[file_path] = "seizure"
-    elif df['seizure_label'].isin([0]).all():
-        file_paths[file_path] = "non_seizure"
-    else:
-        file_paths[file_path] = "test"
+file_paths = {
+    "~/ResearchProject/CSVFeaturesChanged/eeg25_features_changed.csv": "seizure",
+    "~/ResearchProject/CSVFeaturesChanged/eeg44_features_changed.csv": "seizure",
+    "~/ResearchProject/CSVFeaturesChanged/eeg34_features_changed.csv": "seizure",
+    "~/ResearchProject/CSVFeaturesChanged/eeg42_features_changed.csv": "non_seizure",
+    "~/ResearchProject/CSVFeaturesChanged/eeg73_features_changed.csv": "test"
+}
         
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)
@@ -29,7 +23,6 @@ train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test" 
 test_df = dfs[next(path for path, label in file_paths.items() if label == "test")]
 
 train_df = pd.concat(train_dfs, ignore_index=True)
-print(train_df)
 # For non-seizure data, take only 40% of the file's length
 for path, label in file_paths.items():
     if label == "non_seizure":
