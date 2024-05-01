@@ -4,16 +4,22 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 import pandas as pd
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 
-file_paths = {
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg3_features_changed.csv": "non_seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg4_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg58_features_changed.csv": "non_seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg34_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg4_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/background_test.csv": "test"
-}
+directory = "CSVFeaturesChangedBackground/"
+eeg_file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
+
+# Define labels for each file
+file_paths = {}
+for file_path in eeg_file_paths:
+    df = pd.read_csv(os.path.expanduser(file_path))
+    if df['seizure_label'].isin([1]).all():
+        file_paths[file_path] = "seizure"
+    elif df['seizure_label'].isin([0]).all():
+        file_paths[file_path] = "non_seizure"
+    else:
+        file_paths[file_path] = "test"
 
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)

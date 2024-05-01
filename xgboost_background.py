@@ -1,23 +1,19 @@
 import pandas as pd
 import numpy as np
 import os
+import random
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from xgboost import XGBClassifier
 
-file_paths = {
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg4_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg1_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg34_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg73_features_changed.csv": "seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg58_features_changed.csv": "non_seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/eeg10_features_changed.csv": "non_seizure",
-    "~/ResearchProject/CSVFeaturesChangedBackground/background_test.csv": "test"
-}
+directory = "CSVFeaturesChangedBackground/"
+eeg_file_paths = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
 
-for file_path, label in file_paths.items():
+# Define labels for each file
+file_paths = {}
+for file_path in eeg_file_paths:
     df = pd.read_csv(os.path.expanduser(file_path))
     if df['seizure_label'].isin([1]).all():
         file_paths[file_path] = "seizure"
