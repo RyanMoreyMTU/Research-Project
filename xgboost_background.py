@@ -113,3 +113,28 @@ plt.ylabel('Annotation')
 plt.legend(loc='center right')
 plt.grid(True)
 plt.show()
+
+# Get the indices to split predictions based on file boundaries
+file_boundaries = [0, 117, 235, 357, len(y_test)]
+
+# Initialize a dictionary to store the ratio of correct predictions for each file
+file_accuracy = {}
+
+# Calculate the ratio of correct predictions for each file
+for i in range(1, len(file_boundaries)):
+    start_idx = file_boundaries[i-1]
+    end_idx = file_boundaries[i]
+    
+    # Get the subset of true labels and predictions for the current file
+    true_labels_file = y_test.values[start_idx:end_idx]
+    pred_labels_file = y_pred[start_idx:end_idx]
+    
+    # Calculate the ratio of correct predictions for the current file
+    correct_predictions_ratio = np.sum(true_labels_file == pred_labels_file) / len(true_labels_file)
+    
+    # Store the ratio of correct predictions for the current file
+    file_accuracy[f"File {i}"] = correct_predictions_ratio
+
+# Print the ratio of correct predictions for each file
+for file, accuracy in file_accuracy.items():
+    print(f"{file}: {accuracy * 100:.2f}%")
