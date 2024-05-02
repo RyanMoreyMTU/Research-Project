@@ -22,11 +22,19 @@ for file_path in eeg_file_paths:
     else:
         file_paths[file_path] = "test"
 
+
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)
 
+# Get the paths of seizure files
+seizure_file_paths = [path for path, label in file_paths.items() if label == "seizure"]
+
+# Randomly select 20 seizure files to exclude
+random.seed(42)
+seizure_files_to_exclude = random.sample(seizure_file_paths, 18)
+
 # Split up data frames into train and test
-train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test"]
+train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test" and path not in seizure_files_to_exclude]
 test_df = dfs[next(path for path, label in file_paths.items() if label == "test")]
 
 train_df = pd.concat(train_dfs, ignore_index=True)

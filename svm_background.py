@@ -5,6 +5,7 @@ from sklearn.model_selection import GridSearchCV
 import pandas as pd
 import numpy as np
 import os
+import random
 import matplotlib.pyplot as plt
 
 directory = "CSVFeaturesChangedBackground/"
@@ -23,8 +24,16 @@ for file_path in eeg_file_paths:
 
 dfs = {path: pd.read_csv(path).drop(['start', 'end'], axis=1) for path in file_paths.keys()}
 df = pd.concat(dfs.values(), ignore_index=True)
+
+# Get the paths of seizure files
+seizure_file_paths = [path for path, label in file_paths.items() if label == "seizure"]
+
+# Randomly select 20 seizure files to exclude
+random.seed(42)  # for reproducibility
+seizure_files_to_exclude = random.sample(seizure_file_paths, 17)
+
 # Split up data frames into train and test
-train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test"]
+train_dfs = [dfs[path] for path, label in file_paths.items() if label != "test" and path not in seizure_files_to_exclude]
 test_df = dfs[next(path for path, label in file_paths.items() if label == "test")]
 
 train_df = pd.concat(train_dfs, ignore_index=True)
@@ -49,11 +58,11 @@ X_test_normalized = scaler.transform(X_test)
 svm_model = SVC(kernel='linear', random_state=0)
 svm_model.fit(X_train_normalized, y_train)
 
-param_grid = {'C': [1],
+param_grid = {'C': [0.1],
               'kernel': ['linear'],
               'gamma': [1],
               'class_weight': [None],
-              'max_iter': [1000],
+              'max_iter': [-1],
               'tol': [1e-3]
               }
 
