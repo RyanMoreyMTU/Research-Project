@@ -59,7 +59,7 @@ At this point, you should have all the data you want and you can run any of the 
 
 I didn't work on the normal seizure detection model as much because optimizing them wasn't my goal for this project. I wanted to get used to workin with EEG signal with ML models and normal seizure detection models have a lot more documentation online than background EEG models. When I was comfortable enough, I moved onto my main focus which was background EEG models.
 
-Model Files As Of 07/05/2024:
+Model Files As Of 07/05/2024: <br>
 svm_2.py - First SVM model, very basic, normal seizure detection, only uses 5 files <br>
 svm_2_subsample.py - Second SVM model, balances the seizure file data and subsamples the non seizure data, normal seizure detection, only uses 5 files <br>
 svm_test.py - Third SVM model, only subsamples the non seizure data, normal seizure detection, only uses 5 files <br>
