@@ -1,3 +1,5 @@
+# Classifying Seizure Neonates Based Off Their Background EEG Signals
+
 This projects goal is to classify if an neonate (newborn infant) is prone to seizures based off the background data of its EEG signals.
 
 All the data used in this project was acquired from: https://zenodo.org/records/2547147
