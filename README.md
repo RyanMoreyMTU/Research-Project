@@ -36,4 +36,18 @@ Adding a time column. <br>
 The feature_extraction_windowed.py file is the next file that should be run. <br>
 It will extract 12 features, the mean, min, and max of each row, and then output to 2 directories. <br>
 The first directory, CSVFeatures, is the unaltered data.  <br>
-The second directory, CSVFeaturesChanged, is the altered data. This data is altered because it accounts for unforseen flatlines in the data that may harm the data. The flatlines are identified via the mean_total_power column having a value much lower than the other rows. <br>
+The second directory, CSVFeaturesChanged, is the altered data. This data is altered because it accounts for unforseen flatlines in the data that may be harmful. The flatlines are identified via the mean_total_power column having a value much lower than the other rows. <br>
+
+Features Extracted:
+Curve Length <br>
+Spectral Entropy <br>
+RMS (Root Mean Squared) <br>
+Zero Crossings <br>
+Skewness <br>
+Kurtosis <br>
+Variance <br>
+Total Power <br>
+Peak Frequency of Spectrum <br>
+Hjorth Paramters (activity, mobility, complexity) <br>
+
+The feature extraction also uses windowing at 60 seconds per window with a 50% overlap. This means that the first wil be from 0-60 and the second window will be from 30-90 and so on.  <br>
