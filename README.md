@@ -57,3 +57,9 @@ The **feature_extraction_background.py** file will convert the files in CSVFeatu
 ### Models
 At this point, you should have all the data you want and you can run any of the model files.  <br>
 
+Model Files As Of 07/05/2024:
+svm_2.py - First SVM model, very basic, normal seizure detection, only uses 5 files <br>
+svm_2_subsample.py - Second SVM model, balances the seizure file data and subsamples the non seizure data, normal seizure detection, only uses 5 files <br>
+svm_test.py - Third SVM model, only subsamples the non seizure data, normal seizure detection, only uses 5 files <br>
+svm_background - SVM model for background EEG, takes in all the files, gridsearch was utilised  <br>
+xgboost_background - XGboost model for background EEG, takes in all the files, gridsearch was utilised <br>
