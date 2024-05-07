@@ -16,3 +16,8 @@ CSVFeaturesChangedBackground/ - Directory to store the files generated from the 
 
 Optional: <br>
 CSVFeaturesBackground/ - Directory to store the files generated from the feature_extraction_background.py file if you wish to use the unaltered data.  <br>
+
+## Instructions
+Once the directory structure is properly setups, you can clone the repo.
+
+### Cleaning File
