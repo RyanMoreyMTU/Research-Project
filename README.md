@@ -15,19 +15,19 @@ CSVFeaturesChanged/ - Directory to store the altered features from the feature_e
 CSVFeaturesChangedBackground/ - Directory to store the files generated from the feature_extraction_background.py file. <br>
 
 Optional: <br>
-CSVFeaturesBackground/ - Directory to store the files generated from the feature_extraction_background.py file if you wish to use the unaltered data.  <br>
+CSVFeaturesBackground/ - Directory to store the files generated from the feature_extraction_background.py file if you wish to use the unaltered data. <br>
 
 ## Instructions
 Once the directory structure is properly setups, you can clone the repo.
 
 ### Cleaning File
-The cleaning_done.py file is the first file that should be run.  <br>
-This file will read in the EDF files, clean them, and output the new data to a CSV file.  <br>
+The cleaning_done.py file is the first file that should be run. <br>
+This file will read in the EDF files, clean them, and output the new data to a CSV file. <br>
 
-The cleaning includes:  <br>
-Adding filters to the channel data.
-Standardizing the channel names.
-Dropping unneeded channels.
-Annotating the data.
-Resampling the data to 32hz (from 256hz).
-Adding a time column.
+The cleaning includes: <br>
+Adding filters to the channel data. <br>
+Standardizing the channel names. <br>
+Dropping unneeded channels. <br>
+Annotating the data. <br>
+Resampling the data to 32hz (from 256hz). <br>
+Adding a time column. <br>
