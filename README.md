@@ -13,3 +13,6 @@ CSVRaw/ - Directory to output the files generated from the cleaning_done.py file
 CSVFeatures/ - Directory to store the unaltered features from the feature_extraction_windowed.py file. <br>
 CSVFeaturesChanged/ - Directory to store the altered features from the feature_extraction_windowed.py file. <br>
 CSVFeaturesChangedBackground/ - Directory to store the files generated from the feature_extraction_background.py file. <br>
+
+Optional: <br>
+CSVFeaturesBackground/ - Directory to store the files generated from the feature_extraction_background.py file if you wish to use the unaltered data.  <br>
