@@ -52,7 +52,8 @@ Hjorth Paramters (activity, mobility, complexity) <br>
 
 The feature extraction also uses windowing at 60 seconds per window with a 50% overlap. This means that the first wil be from 0-60 and the second window will be from 30-90 and so on.  <br>
 
-### Models
-At this point, you should have all the data you want and you can run any of the model files. 
-
 The feature_extraction_background.py file will convert the files in CSVFeaturesChanged so that the seizure files will have no seizures and the whole file will be converted to 1s to indicate that its a background EEG file. You can change the input and output directories if you want to use the unaltered data in the CSVFeatures directory instead.
+
+### Models
+At this point, you should have all the data you want and you can run any of the model files.  <br>
+
