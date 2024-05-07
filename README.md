@@ -21,7 +21,7 @@ CSVFeaturesBackground/ - Directory to store the files generated from the feature
 Once the directory structure is properly setups, you can clone the repo.
 
 ### Cleaning File
-The cleaning_done.py file is the first file that should be run. <br>
+The **cleaning_done.py** file is the first file that should be run. <br>
 This file will read in the EDF files, clean them, and output the new data to a CSV file. <br>
 
 The cleaning includes: <br>
@@ -33,7 +33,7 @@ Resampling the data to 32hz (from 256hz). <br>
 Adding a time column. <br>
 
 ### Feature Extraction
-The feature_extraction_windowed.py file is the next file that should be run. <br>
+The **feature_extraction_windowed.py** file is the next file that should be run. <br>
 It will extract 12 features, the mean, min, and max of each row, and then output to 2 directories. <br>
 The first directory, CSVFeatures, is the unaltered data.  <br>
 The second directory, CSVFeaturesChanged, is the altered data. This data is altered because it accounts for unforseen flatlines in the data that may be harmful. The flatlines are identified via the mean_total_power column having a value much lower than the other rows. <br>
@@ -52,7 +52,7 @@ Hjorth Paramters (activity, mobility, complexity) <br>
 
 The feature extraction also uses windowing at 60 seconds per window with a 50% overlap. This means that the first wil be from 0-60 and the second window will be from 30-90 and so on.  <br>
 
-The feature_extraction_background.py file will convert the files in CSVFeaturesChanged so that the seizure files will have no seizures and the whole file will be converted to 1s to indicate that its a background EEG file. You can change the input and output directories if you want to use the unaltered data in the CSVFeatures directory instead.
+The **feature_extraction_background.py** file will convert the files in CSVFeaturesChanged so that the seizure files will have no seizures and the whole file will be converted to 1s to indicate that its a background EEG file. You can change the input and output directories if you want to use the unaltered data in the CSVFeatures directory instead.
 
 ### Models
 At this point, you should have all the data you want and you can run any of the model files.  <br>
