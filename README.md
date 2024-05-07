@@ -3,7 +3,7 @@ This projects goal is to classify if an neonate (newborn infant) is prone to sei
 All the data used in this project was acquired from: https://zenodo.org/records/2547147
 It's a data set with 79 EDF files of EEG data. For the sake of accuracy, I only used the files that all 3 expert annotators agreed upon as shown in the clinical_infomration file.
 
-The project directory should have sub-directories for each type of data file:
+The project directory should have sub-directories for each type of data file:\n
 Annotations/ - Directory to store the annotation files (A, B, C).
 EDFFiles/ - Directory to store the EDF files.
 CSVRaw/ - Directory to output the files generated from the cleaning_done.py file.
