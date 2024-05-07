@@ -31,3 +31,9 @@ Dropping unneeded channels. <br>
 Annotating the data. <br>
 Resampling the data to 32hz (from 256hz). <br>
 Adding a time column. <br>
+
+### Feature Extraction
+The feature_extraction_windowed.py file is the next file that should be run. <br>
+It will extract 12 features, the mean, min, and max of each row, and then output to 2 directories. <br>
+The first directory, CSVFeatures, is the unaltered data.  <br>
+The second directory, CSVFeaturesChanged, is the altered data. This data is altered because it accounts for unforseen flatlines in the data that may harm the data. The flatlines are identified via the mean_total_power column having a value much lower than the other rows. <br>
