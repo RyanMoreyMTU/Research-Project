@@ -21,3 +21,4 @@ CSVFeaturesBackground/ - Directory to store the files generated from the feature
 Once the directory structure is properly setups, you can clone the repo.
 
 ### Cleaning File
+The cleaning_done.py file is the first file that should be run.
