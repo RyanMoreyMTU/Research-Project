@@ -38,7 +38,7 @@ It will extract 12 features, the mean, min, and max of each row, and then output
 The first directory, CSVFeatures, is the unaltered data.  <br>
 The second directory, CSVFeaturesChanged, is the altered data. This data is altered because it accounts for unforseen flatlines in the data that may be harmful. The flatlines are identified via the mean_total_power column having a value much lower than the other rows. <br>
 
-Features Extracted:
+Features Extracted: <br>
 Curve Length <br>
 Spectral Entropy <br>
 RMS (Root Mean Squared) <br>
